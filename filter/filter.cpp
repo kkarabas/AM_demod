@@ -8,7 +8,7 @@ filter::filter(int filter_len):
 
 }
 
-void filter::mov_av(std::vector<IQ>& signal, std::vector<float>& filtered_sig, int n)
+void filter::mov_av(const std::vector<IQ>& signal, std::vector<float>& filtered_sig, int n)
 {
     float aver_signal = 0.0;
     // 1 значение скользящего среднего
@@ -16,7 +16,7 @@ void filter::mov_av(std::vector<IQ>& signal, std::vector<float>& filtered_sig, i
         aver_signal += 1.0/float(len) * sqrt( float(signal[i].re)*float(signal[i].re) + float(signal[i].im)*float(signal[i].im) );
     }
 
-    filtered_sig[0] = float(signal[len/2].re)*float(signal[len/2].re) + float(signal[len/2].im)*float(signal[len/2].im) - aver_signal;
+    filtered_sig[0] = sqrt(float(signal[len/2].re)*float(signal[len/2].re) + float(signal[len/2].im)*float(signal[len/2].im)) - aver_signal;
 
     for(int i = 1; i < n - (len - 1) ; i++){
         aver_signal = aver_signal - 1.0/float(len) * sqrt( float(signal[i-1].re)*float(signal[i-1].re) + float(signal[i-1].im)*float(signal[i-1].im) )
